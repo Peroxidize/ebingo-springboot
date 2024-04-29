@@ -20,16 +20,17 @@ public class BingoGameService {
     private BingoGameRepository bingoGameRepository;
     @Autowired
     private BingoCardRepository bingoCardRepository;
+    private static final Random random = new Random();
 
     public String createGame() {
         String gameCode = generateCode();
-        if (getGameByCode(gameCode) == null) {
-            BingoGame bingoGame = new BingoGame();
-            bingoGame.setGameCode(gameCode);
-            bingoGameRepository.save(bingoGame);
-            return gameCode;
+        if (getGameByCode(gameCode) != null) {
+            return createGame();
         }
-        return createGame();
+        BingoGame bingoGame = new BingoGame();
+        bingoGame.setGameCode(gameCode);
+        bingoGameRepository.save(bingoGame);
+        return gameCode;
     }
 
     public ResponseEntity<?> getGame(String gameCode) {
@@ -48,7 +49,6 @@ public class BingoGameService {
 
         List<Integer> numbersRolled = new ArrayList<>(bingoGame.getNumbersRolled());
         List<Integer> numbersNotFound = new ArrayList<>();
-        Random random = new Random();
 
         for (int i = 1; i <= 75; i++) {
             if (!numbersRolled.contains(i)) {
@@ -99,8 +99,7 @@ public class BingoGameService {
 
     private String generateCode() {
         final String combinations = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        final int length = 5;
-        Random random = new Random();
+        final int length = 8;
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < length; i++) {

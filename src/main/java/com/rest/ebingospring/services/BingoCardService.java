@@ -85,7 +85,6 @@ public class BingoCardService {
     private String generateToken() {
         final String combinations = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         final int length = 5;
-        Random random = new Random();
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < length; i++) {
